@@ -31,4 +31,17 @@ function createWorld() {
   appContainer.appendChild(world);
 }
 
+function placeApple() {
+  const x = Math.floor(Math.random() * worldWidth);
+  const y = Math.floor(Math.random() * worldHeight);
+  const apple = document.getElementById(`pixel-${x}-${y}`);
+
+  if (apple === null) {
+    throw new Error("Apple not found");
+  }
+
+  apple.style.backgroundColor = "red";
+}
+
 createWorld();
+placeApple()
