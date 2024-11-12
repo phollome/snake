@@ -67,7 +67,19 @@ function placeApple() {
   apple.style.backgroundColor = "red";
 }
 
+function gameOver() {
+  alert("Game Over");
+  window.location.reload();
+}
+
 function drawSnake() {
+  const head = snake[0];
+  const headPixel = document.getElementById(`pixel-${head.x}-${head.y}`);
+  if (headPixel === null || headPixel.style.backgroundColor === "green") {
+    gameOver();
+    return;
+  }
+
   for (let i = 0; i < snake.length; i++) {
     const { x, y } = snake[i];
     const snakePixel = document.getElementById(`pixel-${x}-${y}`);
