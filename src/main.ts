@@ -98,19 +98,23 @@ function moveSnake() {
   const newHead = getNewHHeadPosition();
   snake.unshift(newHead);
 
-  const tail = snake.pop();
-
-  if (typeof tail === "undefined") {
-    throw new Error("Tail not found");
+  const headPixel = document.getElementById(`pixel-${newHead.x}-${newHead.y}`);
+  if (headPixel !== null && headPixel.style.backgroundColor === "red") {
+    placeApple();
+  } else {
+    const tail = snake.pop();
+    
+    if (typeof tail === "undefined") {
+      throw new Error("Tail not found");
+    }
+    
+    const tailPixel = document.getElementById(`pixel-${tail.x}-${tail.y}`);
+    if (tailPixel === null) {
+      throw new Error("Tail pixel not found");
+    }
+    
+    tailPixel.style.backgroundColor = "lightgray";
   }
-
-  const tailPixel = document.getElementById(`pixel-${tail.x}-${tail.y}`);
-
-  if (tailPixel === null) {
-    throw new Error("Tail pixel not found");
-  }
-
-  tailPixel.style.backgroundColor = "lightgray";
 
   drawSnake();
 }
@@ -121,4 +125,4 @@ drawSnake();
 
 setInterval(() => {
   moveSnake();
-}, 1000);
+}, 200);
