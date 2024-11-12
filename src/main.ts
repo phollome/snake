@@ -59,6 +59,11 @@ function placeApple() {
     throw new Error("Apple not found");
   }
 
+  if (apple.style.backgroundColor === "green") {
+    placeApple();
+    return;
+  }
+
   apple.style.backgroundColor = "red";
 }
 
