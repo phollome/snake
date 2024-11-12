@@ -1,9 +1,14 @@
 const pixelSize = 16;
 const worldWidth = 20;
 const worldHeight = 20;
+const snake = [
+  { x: 4, y: 4 },
+  { x: 3, y: 4 },
+  { x: 2, y: 4 },
+];
 
 function createWorld() {
-  const appContainer = document.getElementById('app');
+  const appContainer = document.getElementById("app");
 
   if (appContainer === null) {
     throw new Error("App container not found");
@@ -27,7 +32,7 @@ function createWorld() {
       world.appendChild(pixel);
     }
   }
-  
+
   appContainer.appendChild(world);
 }
 
@@ -43,5 +48,19 @@ function placeApple() {
   apple.style.backgroundColor = "red";
 }
 
+function placeSnake() {
+  for (let i = 0; i < snake.length; i++) {
+    const { x, y } = snake[i];
+    const snakePixel = document.getElementById(`pixel-${x}-${y}`);
+
+    if (snakePixel === null) {
+      throw new Error("Snake pixel not found");
+    }
+
+    snakePixel.style.backgroundColor = "green";
+  }
+}
+
 createWorld();
-placeApple()
+placeApple();
+placeSnake();
