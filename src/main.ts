@@ -1,3 +1,5 @@
+import "./styles.css";
+
 const pixelSize = 16;
 const worldWidth = 20;
 const worldHeight = 20;
