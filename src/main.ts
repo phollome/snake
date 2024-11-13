@@ -21,7 +21,7 @@ document.onkeyup = (event) => {
   } else if (event.key.startsWith("ArrowLeft") && direction !== "right") {
     direction = "left";
   }
-}
+};
 
 function createWorld() {
   const appContainer = document.getElementById("app");
@@ -39,6 +39,7 @@ function createWorld() {
     for (let j = 0; j < worldWidth; j++) {
       const pixel = document.createElement("div");
       pixel.id = `pixel-${j}-${i}`;
+      pixel.classList.add("pixel");
       pixel.style.width = `${pixelSize}px`;
       pixel.style.height = `${pixelSize}px`;
       pixel.style.backgroundColor = "lightgray";
@@ -53,17 +54,22 @@ function createWorld() {
 }
 
 function placeApple() {
-  const x = Math.floor(Math.random() * worldWidth);
-  const y = Math.floor(Math.random() * worldHeight);
-  const apple = document.getElementById(`pixel-${x}-${y}`);
+  const pixels = Array.from(document.getElementsByClassName("pixel"));
 
-  if (apple === null) {
-    throw new Error("Apple not found");
+  for (let i = 0; i < snake.length; i++) {
+    const snakePixelId = `pixel-${snake[i].x}-${snake[i].y}`;
+    const pixelIndex = pixels.findIndex((pixel) => pixel.id === snakePixelId);
+
+    if (pixelIndex !== -1) {
+      pixels.splice(pixelIndex, 1);
+    }
   }
 
-  if (apple.style.backgroundColor === "green") {
-    placeApple();
-    return;
+  const randomPixel = pixels[Math.floor(Math.random() * pixels.length)];
+
+  const apple = document.getElementById(randomPixel.id);
+  if (apple === null) {
+    throw new Error("Apple pixel not found");
   }
 
   apple.style.backgroundColor = "red";
@@ -94,7 +100,7 @@ function drawSnake() {
   }
 }
 
-function getNewHHeadPosition():{x:number,y:number} {
+function getNewHHeadPosition(): { x: number; y: number } {
   const head = snake[0];
   let newHead = { x: head.x, y: head.y };
 
@@ -111,9 +117,7 @@ function getNewHHeadPosition():{x:number,y:number} {
   return newHead;
 }
 
-
 function moveSnake() {
-
   const newHead = getNewHHeadPosition();
   snake.unshift(newHead);
 
@@ -122,16 +126,16 @@ function moveSnake() {
     placeApple();
   } else {
     const tail = snake.pop();
-    
+
     if (typeof tail === "undefined") {
       throw new Error("Tail not found");
     }
-    
+
     const tailPixel = document.getElementById(`pixel-${tail.x}-${tail.y}`);
     if (tailPixel === null) {
       throw new Error("Tail pixel not found");
     }
-    
+
     tailPixel.style.backgroundColor = "lightgray";
   }
 
