@@ -12,8 +12,12 @@ const snake = [
 let score = -1;
 let time = 0;
 let renderLoop: number | null = null;
-
 let direction: "top" | "right" | "bottom" | "left" = "right";
+
+const urlParams = new URLSearchParams(window.location.search);
+
+let infiniteWorld = urlParams.has("infinite") && urlParams.get("infinite") !== "false";
+let renderSpeed = urlParams.has("speed") ? parseInt(urlParams.get("speed") as string) : 200;
 
 document.onkeyup = (event) => {
   if (event.key.startsWith("ArrowUp") && direction !== "bottom") {
@@ -96,7 +100,26 @@ function gameOver() {
 function drawSnake() {
   const head = snake[0];
   const headPixel = document.getElementById(`pixel-${head.x}-${head.y}`);
-  if (headPixel === null || headPixel.style.backgroundColor === "green") {
+
+  if (headPixel === null) {
+    if (infiniteWorld) {
+      if (direction === "right") {
+        head.x = 0;
+      } else if (direction === "left") {
+        head.x = worldWidth - 1;
+      } else if (direction === "top") {
+        head.y = worldHeight - 1;
+      } else if (direction === "bottom") {
+        head.y = 0;
+      }
+    } else {
+      gameOver();
+      throw new Error("Head pixel not found");
+    }
+    return;
+  }
+
+  if (headPixel.style.backgroundColor === "green") {
     gameOver();
     return;
   }
@@ -113,7 +136,7 @@ function drawSnake() {
   }
 }
 
-function getNewHHeadPosition(): { x: number; y: number } {
+function getNewHeadPosition(): { x: number; y: number } {
   const head = snake[0];
   let newHead = { x: head.x, y: head.y };
 
@@ -131,7 +154,7 @@ function getNewHHeadPosition(): { x: number; y: number } {
 }
 
 function moveSnake() {
-  const newHead = getNewHHeadPosition();
+  const newHead = getNewHeadPosition();
   snake.unshift(newHead);
 
   const headPixel = document.getElementById(`pixel-${newHead.x}-${newHead.y}`);
@@ -161,4 +184,4 @@ drawSnake();
 
 renderLoop = setInterval(() => {
   moveSnake();
-}, 200);
+}, renderSpeed);
