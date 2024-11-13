@@ -11,6 +11,7 @@ const snake = [
 
 let score = -1;
 let time = 0;
+let renderLoop: number | null = null;
 
 let direction: "top" | "right" | "bottom" | "left" = "right";
 
@@ -84,6 +85,10 @@ function placeApple() {
 function gameOver() {
   const elapsedTimeInSeconds = Math.floor((Date.now() - time) / 1000);
 
+  if (renderLoop !== null) {
+    clearInterval(renderLoop);
+  }
+
   alert(`Game Over\nScore: ${score}\nTime: ${elapsedTimeInSeconds} seconds`);
   window.location.reload();
 }
@@ -154,6 +159,6 @@ createWorld();
 placeApple();
 drawSnake();
 
-setInterval(() => {
+renderLoop = setInterval(() => {
   moveSnake();
 }, 200);
