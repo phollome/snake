@@ -159,6 +159,7 @@ function moveSnake() {
 
   const headPixel = document.getElementById(`pixel-${newHead.x}-${newHead.y}`);
   if (headPixel !== null && headPixel.style.backgroundColor === "red") {
+    drawSnake();
     placeApple();
   } else {
     const tail = snake.pop();
@@ -173,14 +174,13 @@ function moveSnake() {
     }
 
     tailPixel.style.backgroundColor = "lightgray";
+    drawSnake();
   }
-
-  drawSnake();
 }
 
 createWorld();
-placeApple();
 drawSnake();
+placeApple();
 
 renderLoop = setInterval(() => {
   moveSnake();
