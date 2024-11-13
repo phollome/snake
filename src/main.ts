@@ -9,6 +9,9 @@ const snake = [
   { x: 2, y: 4 },
 ];
 
+let score = -1;
+let time = 0;
+
 let direction: "top" | "right" | "bottom" | "left" = "right";
 
 document.onkeyup = (event) => {
@@ -51,6 +54,7 @@ function createWorld() {
   }
 
   appContainer.appendChild(world);
+  time = Date.now();
 }
 
 function placeApple() {
@@ -73,10 +77,14 @@ function placeApple() {
   }
 
   apple.style.backgroundColor = "red";
+
+  score++;
 }
 
 function gameOver() {
-  alert("Game Over");
+  const elapsedTimeInSeconds = Math.floor((Date.now() - time) / 1000);
+
+  alert(`Game Over\nScore: ${score}\nTime: ${elapsedTimeInSeconds} seconds`);
   window.location.reload();
 }
 
